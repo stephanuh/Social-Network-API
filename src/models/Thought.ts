@@ -1,6 +1,6 @@
 import { Schema, model, Types, type Document, SchemaTypeOptions } from 'mongoose';
 import dayjs from 'dayjs';
-import { create } from 'domain';
+//import { create } from 'domain';
 
 export interface IThought extends Document {
     thoughtText: string;
@@ -16,8 +16,30 @@ export interface IReaction extends Document {
     createdAt: Date;
 }
 
+
 // Schema settings
-const thoughtSchema = Schema<IThought> = new Schema({
+const reactionSchema = new Schema({
+    reactionId: {
+        type: Schema.Types.ObjectId,
+        defualt: () => new Types.ObjectId(),
+    },
+    reactionBody: {
+        type: String,
+        required: true,
+        maxlength: 280,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    createAt: {
+        type: Date,
+        default: Date.now,
+        get: (value: Date) => dayjs(value).format('YYY-MMM-DD hh:mm:ss A'),
+    },
+});
+
+const thoughtSchema: Schema<IThought> = new Schema({
     thoughtText: {
         type: String,
         required: true,
@@ -41,27 +63,6 @@ const thoughtSchema = Schema<IThought> = new Schema({
     toJSON: {
         virtuals: true,
         getters: true,
-    },
-});
-
-const reactionSchema = new Schema({
-    reactionId: {
-        type: Schema.Types.ObjectId,
-        defualt: () => new Types.ObjectId(),
-    },
-    reactionBody: {
-        type: String,
-        required: true,
-        maxlength: 280,
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    createAt: {
-        type: Date,
-        default: Date.now,
-        get: (value: Date) => dayjs(value).format('YYY-MMM-DD hh:mm:ss A'),
     },
 });
 
