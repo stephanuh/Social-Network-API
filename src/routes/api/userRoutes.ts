@@ -6,7 +6,7 @@ import {
     updateUser,
     deleteUser,
     addFriend,
-    deleteFriend,
+    removeFriend,
 } from '../../controllers/userController';
 
 const router = Router();
@@ -25,6 +25,6 @@ router.route('/:userid')
 // /api/users/:userid/friends/:friendid
 router.route('/:userid/friends/:friendid')
 .post(addFriend)//adds a friend to a user
-.delete(deleteFriend);//delete a friend from a user
+.delete(removeFriend);//delete a friend from a user
 
 export { router as userRouter };
