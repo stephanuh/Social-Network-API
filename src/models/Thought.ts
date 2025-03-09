@@ -2,14 +2,14 @@ import { Schema, model, Types, type Document, SchemaTypeOptions } from 'mongoose
 import dayjs from 'dayjs';
 //import { create } from 'domain';
 
-export interface IThought extends Document {
+interface IThought extends Document {
     thoughtText: string;
     createdAt: Date;
     username: string;
     reactions: Array<IReaction>;
 }
 
-export interface IReaction extends Document {
+interface IReaction extends Document {
     reactionId: Types.ObjectId;
     reactionBody: string;
     username: string;
