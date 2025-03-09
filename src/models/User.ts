@@ -14,12 +14,12 @@ const userSchema= new Schema<IUser>({
         unique: true,
         //trim: true,
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        match: [/^[^@]+@[^@.]+\.[a-zA-Z]{2,}$/, 'Please enter a valid email address'],
-    },
+    // email: {
+    //     type: String,
+    //     required: true,
+    //     unique: true,
+    //     match: [/^[^@]+@[^@.]+\.[a-zA-Z]{2,}$/, 'Please enter a valid email address'],
+    // },
     thoughts: [{
         type: Schema.Types.ObjectId,
         ref: 'Thought',
@@ -36,7 +36,7 @@ const userSchema= new Schema<IUser>({
     timestamps:false
 });
 
-userSchema.virtual('friendCount').get(function (this: IUser) { //or empty function and remove this '?'
+userSchema.virtual('friendCount').get(function () {
     return this.friends?.length;
 });
 
