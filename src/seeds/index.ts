@@ -1,4 +1,4 @@
-import {users,getRandomThought, getRandomReaction, getRandomUsername } from './data.js'; 
+import {users, getRandomThought, getRandomReaction, getRandomUsername } from './data.js'; 
 import { User, Thought } from '../models/index.js';
 import db from '../config/connection.js';
 import cleanDB from './cleanDB.js';
@@ -20,10 +20,10 @@ try {
             for (let j = 0; j < reactionCount; j++) {
                 await Thought.findOneAndUpdate(
                     { _id: thought._id},
-                    { $push: {reaction: {reactionBody: getRandomReaction(), username: getRandomUsername()}}},
+                    { $push: {reactions: {reactionBody: getRandomReaction(), username: getRandomUsername()}}},
                 )
             }
-            await User.findOneAndDelete({ _id: newUser._id },
+            await User.findOneAndUpdate({ _id: newUser._id },
                 { $push: { thoughts: thought._id } }
             );
         }
@@ -43,10 +43,10 @@ try {
             {$addToSet: { friends: friends}}
         );
     }
-    console.info('----Database seeded successfully!----');
+    console.info('Database seeded successfully!🎉');
     process.exit(0);
 } catch(err){
-    console.error('----Error seeding database----');
+    console.error('Error seeding database❌', err);
     process.exit(1);
 }
 
