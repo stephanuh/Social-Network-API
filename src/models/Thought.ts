@@ -1,16 +1,14 @@
-import { Schema, model, Types, type Document, SchemaTypeOptions } from 'mongoose';
-import dayjs from 'dayjs';
-//import { create } from 'domain';
+import { Schema, model, Types, type Document } from 'mongoose';
 
 interface IThought extends Document {
     thoughtText: string;
     createdAt: Date;
     username: string;
-    reactions: Array<IReaction>;
+    reactions: IReaction[];
 }
 
 interface IReaction extends Document {
-    reactionId: Types.ObjectId;
+    reactionId: Schema.Types.ObjectId;
     reactionBody: string;
     username: string;
     createdAt: Date;
@@ -18,10 +16,10 @@ interface IReaction extends Document {
 
 
 // Schema settings
-const reactionSchema = new Schema({
+const reactionSchema = new Schema<IReaction>({
     reactionId: {
         type: Schema.Types.ObjectId,
-        defualt: () => new Types.ObjectId(),
+        default: () => new Types.ObjectId(),
     },
     reactionBody: {
         type: String,
@@ -32,14 +30,13 @@ const reactionSchema = new Schema({
         type: String,
         required: true,
     },
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
-        get: (value: Date) => dayjs(value).format('YYY-MMM-DD hh:mm:ss A'),
     },
 });
 
-const thoughtSchema: Schema<IThought> = new Schema({
+const thoughtSchema = new Schema<IThought> ({
     thoughtText: {
         type: String,
         required: true,
@@ -49,10 +46,7 @@ const thoughtSchema: Schema<IThought> = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        get: function (value: Date | undefined): string {
-            return value ? dayjs(value).format('YYY-MMM-DD hh:mm:ss A') : ''; 
-        },
-    } as unknown as SchemaTypeOptions<Date>,
+    },
     username: {
         type: String,
         required: true,
@@ -62,12 +56,12 @@ const thoughtSchema: Schema<IThought> = new Schema({
 {
     toJSON: {
         virtuals: true,
-        getters: true,
     },
+    timestamps: false,
 });
 
-thoughtSchema.virtual('reactionCount').get(function (this: IThought) {
-    return this.reactions.length;
+thoughtSchema.virtual('reactionCount').get(function () {
+    return this.reactions?.length;
 });
 
 const Thought = model<IThought>('Thought', thoughtSchema);
