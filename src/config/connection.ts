@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
-const dbName = 'snapiDB';
 
 const db = async (): Promise<typeof mongoose.connection> => {
     try {
         await mongoose.connect(
-            process.env.MONGODB_URI || `mongodb://127.0.0.1:27017/${dbName}`
+            process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/socialNetwork_db',
         );
         console.log('Connected to database ✅');
         return mongoose.connection;
