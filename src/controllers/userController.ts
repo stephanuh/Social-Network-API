@@ -3,7 +3,7 @@ import { User } from '../models/index.js';
 
 
 //GET all users
-export const getAllUsers = async (_req: Request, res: Response) => {
+export const getAllUsers = async ( _req: Request, res: Response) => {
     try {
         const users = await User.find();
         res.json(users);
@@ -15,9 +15,9 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 
 //return single user by id
 export const getUserById = async (req: Request, res: Response) => {
-    const { userid } = req.params;
+    const { userId } = req.params;
     try {
-        const user = await User.findById(userid).populate('friends').populate('thoughts');
+        const user = await User.findById(userId).populate('thoughts').populate('friends');
         if (user) {
             res.json(user);
         }else {
@@ -42,10 +42,10 @@ export const createUser = async (req: Request, res: Response) => {
 
 //UPDATE user by id
 export const updateUser = async (req: Request, res: Response) => {
-    const { userid } = req.params;
+    const { userId } = req.params;
     try {
         const user = await User.findOneAndUpdate(
-            {_id: userid},
+            { _id: userId},
             {$set: req.body},
             {runValidators: true, new: true}
         );
@@ -62,9 +62,9 @@ export const updateUser = async (req: Request, res: Response) => {
 
 //DELETE user by id
 export const deleteUser = async (req: Request, res: Response) => {
-    const { userid } = req.params;
+    const { userId } = req.params;
     try {
-        const result = await User.findOneAndDelete({_id: userid});
+        const result = await User.findOneAndDelete({_id: userId});
         if (!result) {
             res.status(404).json({ message: 'No user found with this id!' });
         }else{
@@ -80,14 +80,14 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 //ADD new friends to user friends list
 export const addFriend = async (req: Request, res: Response) => {
-    const { userid, friendId } = req.params;
+    const { userId, friendId } = req.params;
     try {
         const friend = await User.findById(friendId);
         if(!friend){
             res.status(404).json({ message: 'Invalid friend ID!' });
         }else {
             const user = await User.findOneAndUpdate(
-                {_id: userid},
+                { _id: userId},
                 {$addToSet: {friends: friendId}},
                 {new: true}
             );
@@ -105,10 +105,10 @@ export const addFriend = async (req: Request, res: Response) => {
 
 //REMOVE a friend from user friends list
 export const removeFriend = async (req: Request, res: Response ) => {
-    const { userid, friendId } = req.params;
+    const { userId, friendId } = req.params;
     try{
         const user = await User.findOneAndUpdate(
-            {_id: userid},
+            { _id: userId},
             {$pull: { friends: friendId }},
             {new: true}
         );

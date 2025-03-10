@@ -1,6 +1,6 @@
 import express from 'express';
 import db from './config/connection.js';
-import routes from './routes/api/index.js';
+import routes from './routes/index.js';
 
 await db();
 
