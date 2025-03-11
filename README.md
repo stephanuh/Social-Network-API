@@ -2,6 +2,8 @@
 ## Description
 This is a backend API for a social network, allowing users to create profiles, share thoughts, react to friends' posts, and manage friend lists dynamically. It's build with **Express**, **MongoDB**, and **Mongoose**, this project demonstrates NoSQL database management and API routing.
 
+[Click here](https://drive.google.com/file/d/1lItB6cgZ6W2mxYgQVntpfBlbiKO0kxvy/view) to watch a video walkthrough!
+
 ## Table of Contents
 
 - [Installation](#installation)
