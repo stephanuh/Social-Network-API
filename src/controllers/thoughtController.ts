@@ -83,7 +83,7 @@ export const deleteThought = async (req: Request, res: Response) => {
                     {$pull: {thoughts: thoughtId}},
                     {new: true}
                 );
-                res.json(200).json({message: 'Thought deleted successfuly! 🎉'});
+                res.status(200).json({message: 'Thought deleted successfuly! 🎉'});
             }
     }catch(err) {
         console.error('Error on deleteThought',err);
@@ -98,14 +98,14 @@ export const addReaction = async (req: Request, res: Response) => {
     const { thoughtId } = req.params;
     try{
         const thought = await Thought.findOneAndUpdate(
-             {_id: thoughtId},
+             { _id: thoughtId},
             {$addToSet: {reactions: req.body}},
             {runValidators: true, new: true}
         );
         if(!thought){
             res.status(404).json({message: 'No thought found with this id!'});
         }else{
-            res.status(200).json({message: 'Reaction added successfuly! 🎉'});
+            res.json(thought);
         }
     }
     catch (err){
@@ -119,7 +119,7 @@ export const deleteReaction = async (req: Request, res: Response) => {
     const { thoughtId, reactionId } = req.params;
     try{
         const thought = await Thought.findOneAndUpdate(
-            {_id: thoughtId},
+            { _id: thoughtId},
             {$pull: {reactions: {reactionId}}},
             {new: true}
         );
@@ -131,6 +131,6 @@ export const deleteReaction = async (req: Request, res: Response) => {
     }
     catch (err){
         console.error('Error on deleteReaction',err);
-        res.status(400).json(err);
+        res.status(500).json(err);
     }
 }
